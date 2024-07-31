@@ -44,7 +44,7 @@ pydantic==2.8.2
 pydantic_core==2.20.1
 pydeck==0.9.1
 Pygments==2.18.0
-pypiwin32==223
+pypiwin32==305
 PySocks==1.7.1
 pytesseract==0.3.10
 python-dateutil==2.9.0.post0
