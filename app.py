@@ -23,7 +23,6 @@ import pytesseract
 import os
 pytesseract.pytesseract.tesseract_cmd = r'tesseract.exe'  # Assuming Tesseract is in the PATH
 import openai
-from gtts import gTTS
 import pyttsx3
 
 
@@ -44,32 +43,7 @@ def save_image(image):
 
     return filename
 
-def text_to_speech(text):
-    """
-    Convert text to speech and play it directly in the Streamlit app.
 
-    Args:
-    text (str): The text to convert to speech.
-
-    Returns:
-    None
-    """
-    try:
-        # Create a gTTS object with the given text and language
-        tts = gTTS(text=text, lang='en')
-
-        # Save the speech to a BytesIO object
-        audio_bytes = io.BytesIO()
-        tts.write_to_fp(audio_bytes)
-        
-        # Move to the beginning of the BytesIO object
-        audio_bytes.seek(0)
-
-        # Play the audio in Streamlit
-        st.audio(audio_bytes, format='audio/mp3')
-        print("Audio played in the Streamlit app.")
-    except :
-        print(" ")
 
 
 def texGeneration(text):
@@ -109,7 +83,7 @@ def texGeneration(text):
 # Streamlit UI
 # Center the title
 st.markdown(
-    "<h1 style='text-align: center;'>This is Application is for the paritaly blind person</h1>", 
+    "<h1 style='text-align: center;'>This application is for people who are partially blind</h1>", 
     unsafe_allow_html=True
 )
 # Display camera input widget
