@@ -1,0 +1,9 @@
+streamlit
+Pillow
+opencv-python
+pytesseract
+transformers
+torch
+openai
+gtts
+python-dotenv
