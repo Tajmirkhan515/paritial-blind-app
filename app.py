@@ -25,6 +25,7 @@ pytesseract.pytesseract.tesseract_cmd = r'tesseract.exe'  # Assuming Tesseract i
 import openai
 import gtts
 import pygame
+from gtts import gTTS
 
 # Function to save the image
 def save_image(image):
@@ -42,7 +43,16 @@ def save_image(image):
         f.write(image.getvalue())
 
     return filename
-
+def speack(text):
+    tts = gTTS(text, lang='en')
+            
+            # Save to a BytesIO object
+    audio_data = io.BytesIO()
+    tts.write_to_fp(audio_data)
+    audio_data.seek(0)
+            
+            # Play audio in Streamlit
+    st.audio(audio_data, format="audio/mp3")
 
 
 def texGeneration(text):
@@ -69,17 +79,8 @@ def texGeneration(text):
        
 
     message = response.choices[0].message.content
-    print("message from server : ",message)
-    sound=gtts.gTTS(message,lang="en")
-    sound.save("welcome.mp3")
-    #playsound.playsound("welcome.mp3")
-
-    pygame.mixer.init()
-    pygame.mixer.music.load("welcome.mp3")
-    pygame.mixer.music.play()
-    while pygame.mixer.music.get_busy():  # Wait until the sound has finished playing
-        pygame.time.Clock().tick(10)
-
+    print(message)
+    speack(message)
 # Streamlit UI
 # Center the title
 st.markdown(
