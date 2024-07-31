@@ -24,7 +24,7 @@ import os
 pytesseract.pytesseract.tesseract_cmd = r'tesseract.exe'  # Assuming Tesseract is in the PATH
 import openai
 import pyttsx3
-
+import pythoncom
 
 # Function to save the image
 def save_image(image):
