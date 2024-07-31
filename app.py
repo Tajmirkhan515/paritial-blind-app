@@ -4,40 +4,27 @@ try:
     from transformers import BlipProcessor, BlipForConditionalGeneration
 except:
     from transformers import BlipProcessor, BlipForConditionalGeneration
-
-
 from PIL import Image, UnidentifiedImageError
 import requests
-
 import torch
 # Load the processor and model
 processor = BlipProcessor.from_pretrained("Salesforce/blip-image-captioning-base")
 model = BlipForConditionalGeneration.from_pretrained("Salesforce/blip-image-captioning-base")
 import time
-
 import os
 import streamlit as st
-
 import pandas as pd
-
 from PIL import Image
 import io
 import datetime
-
-
 import cv2
 from PIL import Image
 import pytesseract
 import os
-# Set the path to the Tesseract executable
-# Update this path to point to your Tesseract installation if needed
 pytesseract.pytesseract.tesseract_cmd = r'tesseract.exe'  # Assuming Tesseract is in the PATH
-
 import openai
 from gtts import gTTS
-
-
-
+import pyttsx3
 
 
 # Function to save the image
@@ -81,14 +68,14 @@ def text_to_speech(text):
         # Play the audio in Streamlit
         st.audio(audio_bytes, format='audio/mp3')
         print("Audio played in the Streamlit app.")
-    except Exception as e:
-        print(f"An error occurred: {e}")
+    except :
+        print(" ")
 
 
 def texGeneration(text):
 # Retrieve API key from environment variable
     #api_key = os.getenv('OPENAI_API_KEY')
-    
+    st.write("Wait we generate voice")
     client = openai.OpenAI(
         api_key="647bab5949254a898c50e57bccda014a",
         base_url="https://api.aimlapi.com",
@@ -110,13 +97,23 @@ def texGeneration(text):
 
     message = response.choices[0].message.content
     print("message from server : ",message)
-    text_to_speech(message)
+    #text_to_speech(message)
+    # Initialize the TTS engine
+    engine = pyttsx3.init()
+    # Convert text to speech
+    engine.say(message)
+    # Wait for the speech to finish
+    engine.runAndWait()
 
 
 # Streamlit UI
-st.title("Camera Capture")
+# Center the title
+st.markdown(
+    "<h1 style='text-align: center;'>This is Application is for the paritaly blind person</h1>", 
+    unsafe_allow_html=True
+)
 # Display camera input widget
-photo = st.camera_input("Take a photo")
+photo = st.camera_input("Welcome! This is an initial version of the app. In future versions, we’ll integrate full voice interactions. ")
 if photo:
     text=""
     with st.spinner("Processing your image..."):
@@ -125,8 +122,7 @@ if photo:
 
         # Save the image locally
         image_path = save_image(photo)
-        #image_path="captured_images/photo4.jpg"
-        st.write(f"Image saved locally as: {image_path}")
+        #image_path="captured_images/photo4.jpg"        
         try:
             image = Image.open(image_path)
         except:
