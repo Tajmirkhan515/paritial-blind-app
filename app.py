@@ -24,7 +24,7 @@ import os
 pytesseract.pytesseract.tesseract_cmd = r'tesseract.exe'  # Assuming Tesseract is in the PATH
 import openai
 import gtts
-import playsound
+import pygame
 
 # Function to save the image
 def save_image(image):
@@ -72,7 +72,13 @@ def texGeneration(text):
     print("message from server : ",message)
     sound=gtts.gTTS(message,lang="en")
     sound.save("welcome.mp3")
-    playsound.playsound("welcome.mp3")
+    #playsound.playsound("welcome.mp3")
+
+    pygame.mixer.init()
+    pygame.mixer.music.load("welcome.mp3")
+    pygame.mixer.music.play()
+    while pygame.mixer.music.get_busy():  # Wait until the sound has finished playing
+        pygame.time.Clock().tick(10)
 
 # Streamlit UI
 # Center the title
