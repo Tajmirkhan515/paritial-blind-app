@@ -21,7 +21,7 @@ import streamlit as st
 import pandas as pd
 
 from PIL import Image
-import os
+import io
 import datetime
 
 
@@ -57,13 +57,12 @@ def save_image(image):
 
     return filename
 
-def text_to_speech(text, output_file='output.mp3'):
+def text_to_speech(text):
     """
-    Convert text to speech and save it as an MP3 file.
+    Convert text to speech and play it directly in the Streamlit app.
 
     Args:
     text (str): The text to convert to speech.
-    output_file (str): The name of the output MP3 file. Default is 'output.mp3'.
 
     Returns:
     None
@@ -71,17 +70,25 @@ def text_to_speech(text, output_file='output.mp3'):
     try:
         # Create a gTTS object with the given text and language
         tts = gTTS(text=text, lang='en')
-        # Save the speech to the output file
-        tts.save(output_file)
-        print(f"Speech saved to {output_file}")
-        # Optionally play the audio file (this works on Windows)
-        os.startfile(output_file)
-    except:
-        print(" ")
+
+        # Save the speech to a BytesIO object
+        audio_bytes = io.BytesIO()
+        tts.write_to_fp(audio_bytes)
+        
+        # Move to the beginning of the BytesIO object
+        audio_bytes.seek(0)
+
+        # Play the audio in Streamlit
+        st.audio(audio_bytes, format='audio/mp3')
+        print("Audio played in the Streamlit app.")
+    except Exception as e:
+        print(f"An error occurred: {e}")
 
 
 def texGeneration(text):
-
+# Retrieve API key from environment variable
+    #api_key = os.getenv('OPENAI_API_KEY')
+    
     client = openai.OpenAI(
         api_key="647bab5949254a898c50e57bccda014a",
         base_url="https://api.aimlapi.com",
