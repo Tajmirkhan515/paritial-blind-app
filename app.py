@@ -23,8 +23,8 @@ import pytesseract
 import os
 pytesseract.pytesseract.tesseract_cmd = r'tesseract.exe'  # Assuming Tesseract is in the PATH
 import openai
-import pyttsx3
-import pythoncom
+import gtts
+import playsound
 
 # Function to save the image
 def save_image(image):
@@ -45,11 +45,10 @@ def save_image(image):
 
 
 
-
 def texGeneration(text):
 # Retrieve API key from environment variable
     #api_key = os.getenv('OPENAI_API_KEY')
-    st.write("Wait we generate voice")
+    st.write("Wait we are generating voice...")
     client = openai.OpenAI(
         api_key="647bab5949254a898c50e57bccda014a",
         base_url="https://api.aimlapi.com",
@@ -71,14 +70,9 @@ def texGeneration(text):
 
     message = response.choices[0].message.content
     print("message from server : ",message)
-    #text_to_speech(message)
-    # Initialize the TTS engine
-    engine = pyttsx3.init()
-    # Convert text to speech
-    engine.say(message)
-    # Wait for the speech to finish
-    engine.runAndWait()
-
+    sound=gtts.gTTS(message,lang="en")
+    sound.save("welcome.mp3")
+    playsound.playsound("welcome.mp3")
 
 # Streamlit UI
 # Center the title
